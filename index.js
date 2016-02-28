@@ -26,8 +26,9 @@ function points (act) {
 }
 
 function redraw () {
+  var points = '(' + storage.points + ')'
   vorpal
-    .delimiter('karma (' + storage.points + ') $')
+    .delimiter('karma ' + points.blue + ' $')
 }
 
 function addHistory (name, points, times) {
