@@ -1,8 +1,8 @@
 # karma
 
-![https://i.imgur.com/9p9uWAu.png](https://i.imgur.com/9p9uWAu.png)
-
 _manage activities with a points/karma system_
+
+![https://i.imgur.com/9p9uWAu.png](https://i.imgur.com/9p9uWAu.png)
 
 
 ## Setup
