@@ -1,0 +1,15 @@
+{
+  "name": "karma",
+  "version": "1.0.0",
+  "description": "Karma management",
+  "main": "index.js",
+  "scripts": {
+    "reset": "rm db.json"
+  },
+  "author": "Daniel Bugl <me@omnidan.net>",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "vorpal": "^1.9.7"
+  }
+}
