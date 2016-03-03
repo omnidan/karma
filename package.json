@@ -10,6 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "colors": "^1.1.2",
-    "vorpal": "^1.9.7"
+    "vorpal": "^1.10.8"
   }
 }
