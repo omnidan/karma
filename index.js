@@ -5,15 +5,17 @@ var fs = require('fs')
 var storage = {}
 try {
   var rawStorage = JSON.parse(fs.readFileSync('db.json'))
-  storage.points = rawStorage.points
-  storage.history = rawStorage.history
+  storage.points = rawStorage.points || 0
+  storage.history = rawStorage.history || []
+  storage.streaks = rawStorage.streaks || {}
   storage.acts = {}
   Object.keys(rawStorage.acts).forEach(act => define(act, rawStorage.acts[act]))
 } catch (e) {
   storage = {
     points: 0,
     acts: {},
-    history: []
+    history: [],
+    streaks: {}
   }
 }
 
@@ -124,6 +126,52 @@ vorpal
     this.log()
     callback()
   })
+
+// anti-habit streaks
+function lastAction (habit, date) {
+  const created = storage.streaks.hasOwnProperty(habit)
+  storage.streaks[habit] = date
+  persist()
+  return created
+}
+
+function printActions () {
+  if (!storage.streaks || storage.streaks.length)
+    return "no streaks yet, use: action HABIT"
+
+  const ONE_DAY = 1000 * 60 * 60 * 24
+
+  const streaks = Object.keys(storage.streaks).map(k => {
+    const lastAction = (new Date(storage.streaks[k])).getTime()
+    const currentTime = (new Date(Date.now())).getTime()
+    const days = Math.round(Math.abs(currentTime - lastAction) / ONE_DAY)
+    return k + ': ' + '#'.repeat(days) + ' (' + days + ' days)'
+  })
+
+  return streaks.join('\n')
+}
+
+vorpal
+  .command('action <habit>')
+  .description('Starts a streak of not doing a certain habit')
+  .alias('a')
+  .action(function (args, callback) {
+    const re = lastAction(args.habit, Date.now()) ? 're-' : ''
+    this.log(re + 'started anti-habit streak `' + args.habit + '`')
+    callback()
+  })
+
+vorpal
+  .command('actions')
+  .description('List anti-habit streaks')
+  .alias('al')
+  .action(function (args, callback) {
+    this.log()
+    this.log(printActions())
+    this.log()
+    callback()
+  })
+
 
 redraw()
 
